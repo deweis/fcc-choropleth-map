@@ -11,5 +11,6 @@ Results:
 TBD:
 - Check on examples
 - Fetch the data
+- Check responsiveness on grid solution: https://stackoverflow.com/a/9539361
 
 */
