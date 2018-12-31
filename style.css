@@ -10,3 +10,28 @@ h1 {
 h3 {
   color: #9e9e9e; /* grey */
 }
+
+.container {
+  display: flex;
+}
+
+.svg {
+  margin: 0 auto;
+  width: 90vw;
+  height: 60vw;
+  background: #eeeeee; /* grey lighten-3 */
+}
+
+@media (min-width: 670px) {
+  .svg {
+    width: 90vw;
+    height: 440px;
+  }
+}
+
+@media (min-width: 1080px) {
+  .svg {
+    width: 880px;
+    height: 490px;
+  }
+}

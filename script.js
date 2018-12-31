@@ -14,3 +14,10 @@ TBD:
 - Check responsiveness on grid solution: https://stackoverflow.com/a/9539361
 
 */
+
+/* Add the SVG */
+const svg = d3
+  .select('#chartContainer')
+  .append('svg')
+  .attr('id', 'chart')
+  .attr('class', 'svg');
