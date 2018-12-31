@@ -21,3 +21,20 @@ const svg = d3
   .append('svg')
   .attr('id', 'chart')
   .attr('class', 'svg');
+
+/* Fetch the data */
+d3.json(
+  'https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/counties.json',
+  function(error, us) {
+    if (error) console.log(error);
+    console.log('US', us);
+  }
+);
+
+d3.json(
+  'https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/for_user_education.json',
+  function(error, educationData) {
+    if (error) console.log(error);
+    console.log('Education', educationData);
+  }
+);
