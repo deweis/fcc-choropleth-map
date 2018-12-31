@@ -7,6 +7,7 @@ Results:
 - https://bl.ocks.org/JulienAssouline/1ae3480c5277e2eecd34b71515783d6f
 - http://bl.ocks.org/palewire/d2906de347a160f38bc0b7ca57721328
 - https://beta.observablehq.com/@mbostock/d3-choropleth
+- https://bost.ocks.org/mike/map/
 
 TBD:
 - Check on examples
