@@ -17,11 +17,13 @@ h3 {
 
 .svg {
   margin: 0 auto;
-  width: 90vw;
-  height: 60vw;
+  /* width: 90vw; */
+  /* height: 60vw; */
   background: #eeeeee; /* grey lighten-3 */
+  width: 960px;
+  height: 600px;
 }
-
+/* 
 @media (min-width: 670px) {
   .svg {
     width: 90vw;
@@ -34,4 +36,4 @@ h3 {
     width: 820px;
     height: 440px;
   }
-}
+} */

@@ -1,3 +1,44 @@
+/* https://www.youtube.com/watch?v=G-VggTK-Wlg */
+
+/* https://codepen.io/eday69/pen/eLeegZ?editors=0101 */
+
+// create an svg element
+const svg = d3
+  .select('#chartContainer')
+  .append('svg')
+  .attr('id', 'chart')
+  .attr('class', 'svg');
+
+// async load the data (topojson file)
+d3.queue()
+  .defer(
+    d3.json,
+    'https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/counties.json'
+  )
+  .await(ready);
+
+// create a path (geoPath)
+const path = d3.geoPath();
+
+function ready(error, data) {
+  console.log(data);
+
+  // topojson.feature converts our RAW geo data into usable geo data
+  const counties = topojson.feature(data, data.objects.counties).features;
+
+  // Add a path - I.e. whenever I want to draw a shape I use path's
+  svg
+    .append('g')
+    .selectAll('path')
+    .data(counties)
+    .enter()
+    .append('path')
+    .attr('class', 'county')
+    .attr('d', path)
+    .attr('stroke', '#616161')
+    .attr('fill', '#eeeeee');
+}
+
 /*
 Examples Check:
 - https://www.google.com/search?client=firefox-b-ab&q=d3+Choropleth+map
@@ -16,14 +57,7 @@ TBD:
 
 */
 
-/* Add the SVG */
-const svg = d3
-  .select('#chartContainer')
-  .append('svg')
-  .attr('id', 'chart')
-  .attr('class', 'svg');
-
-/* Fetch the data */
+/* Fetch the data 
 d3.json(
   'https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/counties.json',
   function(error, us) {
@@ -39,3 +73,4 @@ d3.json(
     console.log('Education', educationData);
   }
 );
+*/
