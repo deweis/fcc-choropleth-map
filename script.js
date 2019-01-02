@@ -7,7 +7,12 @@ const svg = d3
   .select('#chartContainer')
   .append('svg')
   .attr('id', 'chart')
-  .attr('class', 'svg');
+  .attr('class', 'svg')
+  .attr(
+    'viewBox',
+    `45 -60 800 750`
+  ) /* I have no clue how exactly these figures work?? ..but it's perfectly responsive */
+  .attr('preserveAspectRatio', 'xMidYMid meet');
 
 // async load the data (topojson file)
 d3.queue()
@@ -21,7 +26,7 @@ d3.queue()
 const path = d3.geoPath();
 
 function ready(error, data) {
-  console.log(data);
+  //console.log(data);
 
   // topojson.feature converts our RAW geo data into usable geo data
   const counties = topojson.feature(data, data.objects.counties).features;
