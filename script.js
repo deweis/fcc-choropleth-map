@@ -27,11 +27,15 @@ const path = d3.geoPath();
 
 function ready(error, data) {
   //console.log(data);
+  if (error) {
+    console.log(error);
+  }
 
   // topojson.feature converts our RAW geo data into usable geo data
   const counties = topojson.feature(data, data.objects.counties).features;
+  const states = topojson.feature(data, data.objects.states).features;
 
-  // Add a path - I.e. whenever I want to draw a shape I use path's
+  // Add the counties (I.e. whenever I want to draw a shape I use path's)
   svg
     .append('g')
     .selectAll('path')
@@ -40,8 +44,20 @@ function ready(error, data) {
     .append('path')
     .attr('class', 'county')
     .attr('d', path)
-    .attr('stroke', '#616161')
-    .attr('fill', '#eeeeee');
+    .attr('stroke', '#bdbdbd') // The lines - grey lighten-1
+    .attr('fill', '#fafafa'); // The background - grey lighten-5
+
+  // Add the states
+  svg
+    .append('g')
+    .selectAll('path')
+    .data(states)
+    .enter()
+    .append('path')
+    .attr('class', 'state')
+    .attr('d', path)
+    .attr('stroke', '#9e9e9e') // grey
+    .attr('fill', 'none');
 }
 
 /*

@@ -23,7 +23,7 @@ h3 {
 .svg {
   width: 100%;
   height: 100%;
-  background: #eeeeee; /* grey lighten-3 */
+  background: #fafafa; /* grey lighten-5 */
 }
 
 @media (min-width: 980px) {
