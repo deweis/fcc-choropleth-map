@@ -2,6 +2,19 @@
 
 /* https://codepen.io/eday69/pen/eLeegZ?editors=0101 */
 
+/*
+education = {
+  area_name: "Autauga County",
+  bachelorsOrHigher: 21.9,
+  fips: 1001,
+  state: "AL"
+}
+
+counties = {
+  id: 1001
+}
+*/
+
 // create an svg element
 const svg = d3
   .select('#chartContainer')
@@ -11,7 +24,7 @@ const svg = d3
   .attr(
     'viewBox',
     `45 -60 800 750`
-  ) /* I have no clue how exactly these figures work?? ..but it's perfectly responsive */
+  ) /* I have no clue how exactly these figures work?? ..but it's perfectly responsive. Figured them out by trial and error in combination with the .container styling in css */
   .attr('preserveAspectRatio', 'xMidYMid meet');
 
 // async load the data (topojson file)
@@ -20,20 +33,28 @@ d3.queue()
     d3.json,
     'https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/counties.json'
   )
+  .defer(
+    d3.json,
+    'https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/for_user_education.json'
+  )
   .await(ready);
 
 // create a path (geoPath)
 const path = d3.geoPath();
 
-function ready(error, data) {
+function ready(error, counties_data, education_data) {
   //console.log(data);
   if (error) {
     console.log(error);
   }
 
   // topojson.feature converts our RAW geo data into usable geo data
-  const counties = topojson.feature(data, data.objects.counties).features;
-  const states = topojson.feature(data, data.objects.states).features;
+  const counties = topojson.feature(
+    counties_data,
+    counties_data.objects.counties
+  ).features;
+  const states = topojson.feature(counties_data, counties_data.objects.states)
+    .features;
 
   // Add the counties (I.e. whenever I want to draw a shape I use path's)
   svg
