@@ -66,7 +66,12 @@ function ready(error, counties_data, education_data) {
     .attr('class', 'county')
     .attr('d', path)
     .attr('stroke', '#bdbdbd') // The lines - grey lighten-1
-    .attr('fill', '#fafafa'); // The background - grey lighten-5
+    .attr('fill', '#fafafa') // The background - grey lighten-5
+    .attr('data-fips', d => d.id)
+    .attr(
+      'data-education',
+      d => education_data.find(x => x.fips === d.id).bachelorsOrHigher
+    );
 
   // Add the states
   svg
