@@ -15,6 +15,13 @@ counties = {
 }
 */
 
+/****
+ * - Finetune Layout
+ * - Add array with empty fields for db style data storage
+ * - Put examples to browser bookmarks and clean the code
+ * - Finetune Layout
+ */
+
 // create an svg element
 const svg = d3
   .select('#chartContainer')
@@ -42,6 +49,7 @@ d3.queue()
 // create a path (geoPath)
 const path = d3.geoPath();
 
+// add the map to the svg and fill the data in
 function ready(error, counties_data, education_data) {
   //console.log(data);
   if (error) {
@@ -162,6 +170,30 @@ function ready(error, counties_data, education_data) {
     .attr('d', path)
     .attr('stroke', '#f5f5f5') /* grey lighten-4 */
     .attr('fill', 'none');
+
+  // Add the legend
+  const linear = d3
+    .scaleQuantize()
+    //.scaleLinear() ?? How to add the right coloring?
+    .domain([minEdu, maxEdu])
+    .range(colors);
+
+  svg
+    .append('g')
+    .attr('class', 'legendLinear')
+    .attr('id', 'legend')
+    .attr('transform', 'translate(30, 640)');
+
+  const legendLinear = d3
+    .legendColor()
+    //.labelFormat(d3.format('.0s')) ?? d3.format is a mysterium.. How to add the percentage string?
+    .labelFormat((d, i) => `${d.toFixed()}%`)
+    .shapeWidth(110)
+    .cells(8)
+    .orient('horizontal')
+    .scale(linear);
+
+  svg.select('.legendLinear').call(legendLinear);
 }
 
 /*
