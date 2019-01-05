@@ -16,10 +16,12 @@ counties = {
 */
 
 /****
- * - Finetune Layout
- * - Add array with empty fields for db style data storage
+ * - Finetune Layout (I.e. tooltip)
+ * - Add some better text to the tooltip
+ * - Add array with empty fields for db style data storage --> check https://codepen.io/eday69/pen/eLeegZ?editors=0101
  * - Put examples to browser bookmarks and clean the code
  * - Finetune Layout
+ * - Add to codepen and close challenge
  */
 
 // create an svg element
