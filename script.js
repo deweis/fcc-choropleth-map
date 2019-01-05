@@ -53,8 +53,17 @@ function ready(error, counties_data, education_data) {
     counties_data,
     counties_data.objects.counties
   ).features;
+
   const states = topojson.feature(counties_data, counties_data.objects.states)
     .features;
+
+  // Define the tooltip div --> Thanks http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+  const divTooltip = d3
+    .select('body')
+    .append('div')
+    .attr('class', 'tooltip')
+    .attr('id', 'tooltip')
+    .style('opacity', 0);
 
   // Add the counties (I.e. whenever I want to draw a shape I use path's)
   svg
@@ -71,7 +80,53 @@ function ready(error, counties_data, education_data) {
     .attr(
       'data-education',
       d => education_data.find(x => x.fips === d.id).bachelorsOrHigher
-    );
+    )
+    .on('mouseover', d => {
+      const county_name = education_data.find(x => x.fips === d.id).area_name;
+      const edu = education_data.find(x => x.fips === d.id).bachelorsOrHigher;
+
+      divTooltip
+        .transition()
+        .duration(200)
+        .style('opacity', 0.9)
+        .attr('data-education', edu);
+
+      divTooltip
+        .html(`${county_name}, ND: ${edu}%`)
+        .style('left', d3.event.pageX + 10 + 'px')
+        .style('top', d3.event.pageY - 35 + 'px')
+        .style('background', 'grey');
+
+      /*const formatTime = d3.timeFormat('%M:%S');
+      const doped = d[2] === '' ? '' : `<br><br>${d[2]}`;
+      const well = d[2] === '' ? '<br><br>Well, seems he had a good doctor..😉' : '';
+
+      divTooltip
+        .transition()
+        .duration(200)
+        .style('opacity', 0.9)
+        .attr('data-year', d[0]);
+
+      divTooltip
+        .html(
+          `
+          ${d[3]}: ${d[4]}<br>
+          Year: ${d[0]},  Time: ${formatTime(d[1])}
+          ${doped}
+          ${well}
+          `
+        )
+        .style('left', d3.event.pageX + 10 + 'px')
+        .style('top', d3.event.pageY - 35 + 'px')
+        .style('background', doped ? '#ffcdd2' : '#c8e6c9'); //  Doping: Yes: red lighten-4 / No: green lighten-4*/
+    })
+    .on('mouseout', d => {
+      /* Hide the tooltip when hovering out */
+      divTooltip
+        .transition()
+        .duration(500)
+        .style('opacity', 0);
+    });
 
   // Add the states
   svg
