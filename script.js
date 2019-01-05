@@ -57,6 +57,26 @@ function ready(error, counties_data, education_data) {
   const states = topojson.feature(counties_data, counties_data.objects.states)
     .features;
 
+  // the coloring
+  const colors = [
+    '#90caf9', // blue lighten-3
+    '#64b5f6', // blue lighten-2
+    '#42a5f5', // blue lighten-1
+    '#2196f3', // blue
+    '#1e88e5', // blue darken-1
+    '#1976d2', // blue darken-2
+    '#1565c0', // blue darken-3
+    '#0d47a1' // blue darken-4
+  ];
+
+  const minEdu = d3.min(education_data, d => d.bachelorsOrHigher);
+  const maxEdu = d3.max(education_data, d => d.bachelorsOrHigher);
+
+  const colorScale = d3
+    .scaleQuantize()
+    .domain([minEdu, maxEdu])
+    .range(colors);
+
   // Define the tooltip div --> Thanks http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
   const divTooltip = d3
     .select('body')
@@ -74,8 +94,11 @@ function ready(error, counties_data, education_data) {
     .append('path')
     .attr('class', 'county')
     .attr('d', path)
-    .attr('stroke', '#bdbdbd') // The lines - grey lighten-1
-    .attr('fill', '#fafafa') // The background - grey lighten-5
+    //.attr('stroke', '#bdbdbd') // The lines - grey lighten-1
+    //.attr('fill', '#fafafa') // The background - grey lighten-5
+    .style('fill', d =>
+      colorScale(education_data.find(x => x.fips === d.id).bachelorsOrHigher)
+    )
     .attr('data-fips', d => d.id)
     .attr(
       'data-education',
@@ -137,7 +160,7 @@ function ready(error, counties_data, education_data) {
     .append('path')
     .attr('class', 'state')
     .attr('d', path)
-    .attr('stroke', '#9e9e9e') // grey
+    .attr('stroke', '#f5f5f5') /* grey lighten-4 */
     .attr('fill', 'none');
 }
 
