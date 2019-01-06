@@ -1,42 +1,18 @@
-/* https://www.youtube.com/watch?v=G-VggTK-Wlg */
-
-/* https://codepen.io/eday69/pen/eLeegZ?editors=0101 */
-
-/*
-education = {
-  area_name: "Autauga County",
-  bachelorsOrHigher: 21.9,
-  fips: 1001,
-  state: "AL"
-}
-
-counties = {
-  id: 1001
-}
-*/
-
-/****
- * - Finetune Layout (I.e. tooltip)
- * - Add some better text to the tooltip
- * - Add array with empty fields for db style data storage --> check https://codepen.io/eday69/pen/eLeegZ?editors=0101
- * - Put examples to browser bookmarks and clean the code
- * - Finetune Layout
- * - Add to codepen and close challenge
+/**
+ * Create and append the svg element
  */
-
-// create an svg element
 const svg = d3
   .select('#chartContainer')
   .append('svg')
   .attr('id', 'chart')
   .attr('class', 'svg')
-  .attr(
-    'viewBox',
-    `45 -60 800 750`
-  ) /* I have no clue how exactly these figures work?? ..but it's perfectly responsive. Figured them out by trial and error in combination with the .container styling in css */
+  /* No clue how exactly these figures work?? ..but it's perfectly responsive. Figured them out by trial and error in combination with the .container styling in css */
+  .attr('viewBox', `45 -60 800 750`)
   .attr('preserveAspectRatio', 'xMidYMid meet');
 
-// async load the data (topojson file)
+/**
+ * Async load the data geo and education data
+ */
 d3.queue()
   .defer(
     d3.json,
@@ -48,17 +24,21 @@ d3.queue()
   )
   .await(ready);
 
-// create a path (geoPath) - Used to draw shapes
+/**
+ * create a path (geoPath) - Needed to draw shapes
+ */
 const path = d3.geoPath();
 
-// add the map to the svg and fill the data in
+/**
+ * Main function triggered when data load is ready
+ * Responsible to draw all data within the svg
+ */
 function ready(error, counties_data, education_data) {
-  //console.log(data);
   if (error) {
     console.log(error);
   }
 
-  // topojson.feature converts our RAW geo data into usable geo data
+  /* Note: topojson.feature converts the RAW geo data into usable geo data */
   const counties = topojson.feature(
     counties_data,
     counties_data.objects.counties
@@ -67,7 +47,7 @@ function ready(error, counties_data, education_data) {
   const states = topojson.feature(counties_data, counties_data.objects.states)
     .features;
 
-  // the coloring
+  /* The coloring */
   const colors = [
     '#90caf9', // blue lighten-3
     '#64b5f6', // blue lighten-2
@@ -87,8 +67,9 @@ function ready(error, counties_data, education_data) {
     .domain([minEdu, maxEdu])
     .range(colors);
 
-  /** Define the tooltip DIV
-   *  Thanks for the input: http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+  /**
+   * Define the tooltip DIV
+   * Thanks for the input: http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
    */
   const divTooltip = d3
     .select('body')
@@ -97,8 +78,9 @@ function ready(error, counties_data, education_data) {
     .attr('id', 'tooltip')
     .style('opacity', 0);
 
-  /** Store the data in an array with fips as index, so it can be linked to the location data (I.e. counties)
-   *  Thanks for the input: https://codepen.io/eday69/pen/eLeegZ?editors=0011
+  /**
+   * Store the data in an array with fips as index, so it can be linked to the location data (I.e. counties)
+   * Thanks for the input: https://codepen.io/eday69/pen/eLeegZ?editors=0011
    */
   let education = [];
 
@@ -110,7 +92,7 @@ function ready(error, counties_data, education_data) {
   });
 
   /**
-   * Add the counties
+   * Draw the data into the svg - Add the counties first
    */
   svg
     .append('g')
@@ -134,29 +116,6 @@ function ready(error, counties_data, education_data) {
         .html(`${education[d.id].county} - ${education[d.id].edu}%`)
         .style('left', d3.event.pageX + 10 + 'px')
         .style('top', d3.event.pageY - 35 + 'px');
-
-      /*const formatTime = d3.timeFormat('%M:%S');
-      const doped = d[2] === '' ? '' : `<br><br>${d[2]}`;
-      const well = d[2] === '' ? '<br><br>Well, seems he had a good doctor..😉' : '';
-
-      divTooltip
-        .transition()
-        .duration(200)
-        .style('opacity', 0.9)
-        .attr('data-year', d[0]);
-
-      divTooltip
-        .html(
-          `
-          ${d[3]}: ${d[4]}<br>
-          Year: ${d[0]},  Time: ${formatTime(d[1])}
-          ${doped}
-          ${well}
-          `
-        )
-        .style('left', d3.event.pageX + 10 + 'px')
-        .style('top', d3.event.pageY - 35 + 'px')
-        .style('background', doped ? '#ffcdd2' : '#c8e6c9'); //  Doping: Yes: red lighten-4 / No: green lighten-4*/
     })
     .on('mouseout', d => {
       /* Hide the tooltip when hovering out */
@@ -166,7 +125,9 @@ function ready(error, counties_data, education_data) {
         .style('opacity', 0);
     });
 
-  // Add the states
+  /**
+   * Add the states
+   */
   svg
     .append('g')
     .selectAll('path')
@@ -178,7 +139,9 @@ function ready(error, counties_data, education_data) {
     .attr('stroke', '#f5f5f5') /* grey lighten-4 */
     .attr('fill', 'none');
 
-  // Add the legend
+  /**
+   * Add the legend
+   */
   const linear = d3
     .scaleQuantize()
     //.scaleLinear() ?? How to add the right coloring?
@@ -202,39 +165,3 @@ function ready(error, counties_data, education_data) {
 
   svg.select('.legendLinear').call(legendLinear);
 }
-
-/*
-Examples Check:
-- https://www.google.com/search?client=firefox-b-ab&q=d3+Choropleth+map
-
-Results:
-- https://www.youtube.com/watch?v=OoZ0LWD9KUs
-- https://bl.ocks.org/JulienAssouline/1ae3480c5277e2eecd34b71515783d6f
-- http://bl.ocks.org/palewire/d2906de347a160f38bc0b7ca57721328
-- https://beta.observablehq.com/@mbostock/d3-choropleth
-- https://bost.ocks.org/mike/map/
-
-TBD:
-- Check on examples
-- Fetch the data
-- Check responsiveness on grid solution: https://stackoverflow.com/a/9539361
-
-*/
-
-/* Fetch the data 
-d3.json(
-  'https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/counties.json',
-  function(error, us) {
-    if (error) console.log(error);
-    console.log('US', us);
-  }
-);
-
-d3.json(
-  'https://raw.githubusercontent.com/no-stack-dub-sack/testable-projects-fcc/master/src/data/choropleth_map/for_user_education.json',
-  function(error, educationData) {
-    if (error) console.log(error);
-    console.log('Education', educationData);
-  }
-);
-*/
