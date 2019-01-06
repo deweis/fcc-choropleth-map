@@ -48,7 +48,7 @@ d3.queue()
   )
   .await(ready);
 
-// create a path (geoPath)
+// create a path (geoPath) - Used to draw shapes
 const path = d3.geoPath();
 
 // add the map to the svg and fill the data in
@@ -87,7 +87,9 @@ function ready(error, counties_data, education_data) {
     .domain([minEdu, maxEdu])
     .range(colors);
 
-  // Define the tooltip div --> Thanks http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+  /** Define the tooltip DIV
+   *  Thanks for the input: http://bl.ocks.org/d3noob/a22c42db65eb00d4e369
+   */
   const divTooltip = d3
     .select('body')
     .append('div')
@@ -95,7 +97,21 @@ function ready(error, counties_data, education_data) {
     .attr('id', 'tooltip')
     .style('opacity', 0);
 
-  // Add the counties (I.e. whenever I want to draw a shape I use path's)
+  /** Store the data in an array with fips as index, so it can be linked to the location data (I.e. counties)
+   *  Thanks for the input: https://codepen.io/eday69/pen/eLeegZ?editors=0011
+   */
+  let education = [];
+
+  education_data.forEach(x => {
+    education[x.fips] = {
+      edu: x.bachelorsOrHigher,
+      county: x.area_name
+    };
+  });
+
+  /**
+   * Add the counties
+   */
   svg
     .append('g')
     .selectAll('path')
@@ -104,28 +120,18 @@ function ready(error, counties_data, education_data) {
     .append('path')
     .attr('class', 'county')
     .attr('d', path)
-    //.attr('stroke', '#bdbdbd') // The lines - grey lighten-1
-    //.attr('fill', '#fafafa') // The background - grey lighten-5
-    .style('fill', d =>
-      colorScale(education_data.find(x => x.fips === d.id).bachelorsOrHigher)
-    )
+    .style('fill', d => colorScale(education[d.id].edu))
     .attr('data-fips', d => d.id)
-    .attr(
-      'data-education',
-      d => education_data.find(x => x.fips === d.id).bachelorsOrHigher
-    )
+    .attr('data-education', d => education[d.id].edu)
     .on('mouseover', d => {
-      const county_name = education_data.find(x => x.fips === d.id).area_name;
-      const edu = education_data.find(x => x.fips === d.id).bachelorsOrHigher;
-
       divTooltip
         .transition()
         .duration(200)
         .style('opacity', 0.9)
-        .attr('data-education', edu);
+        .attr('data-education', education[d.id].edu);
 
       divTooltip
-        .html(`${county_name} - ${edu}%`)
+        .html(`${education[d.id].county} - ${education[d.id].edu}%`)
         .style('left', d3.event.pageX + 10 + 'px')
         .style('top', d3.event.pageY - 35 + 'px');
 
