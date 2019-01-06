@@ -79,7 +79,8 @@ function ready(error, counties_data, education_data) {
     .style('opacity', 0);
 
   /**
-   * Store the data in an array with fips as index, so it can be linked to the location data (I.e. counties)
+   * Store the data in an array of objects with fips as index,
+   * so it can be linked to the location data (I.e. counties)
    * Thanks for the input: https://codepen.io/eday69/pen/eLeegZ?editors=0011
    */
   let education = [];
@@ -106,6 +107,7 @@ function ready(error, counties_data, education_data) {
     .attr('data-fips', d => d.id)
     .attr('data-education', d => education[d.id].edu)
     .on('mouseover', d => {
+      /* Show tooltip when hovering in */
       divTooltip
         .transition()
         .duration(200)
@@ -118,7 +120,7 @@ function ready(error, counties_data, education_data) {
         .style('top', d3.event.pageY - 35 + 'px');
     })
     .on('mouseout', d => {
-      /* Hide the tooltip when hovering out */
+      /* Hide tooltip when hovering out */
       divTooltip
         .transition()
         .duration(500)
