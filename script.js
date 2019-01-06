@@ -6,12 +6,12 @@ const svg = d3
   .append('svg')
   .attr('id', 'chart')
   .attr('class', 'svg')
-  /* No clue how exactly these figures work?? ..but it's perfectly responsive. Figured them out by trial and error in combination with the .container styling in css */
+  /* No clue how exactly these figures work?? ..but it's responsive. Figured them out by trial and error in combination with the .container styling in css */
   .attr('viewBox', `45 -60 800 750`)
   .attr('preserveAspectRatio', 'xMidYMid meet');
 
 /**
- * Async load the data geo and education data
+ * Async load the geo and education data
  */
 d3.queue()
   .defer(
