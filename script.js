@@ -101,11 +101,23 @@ function ready(error, counties_data, education_data) {
     .data(counties)
     .enter()
     .append('path')
+    /* Add the animation
+     * Thank you: https://codepen.io/HIC/full/JaaEOa/
+     */
+    .transition()
+    .duration(0)
+    .delay((d, i) => i * 1)
     .attr('class', 'county')
     .attr('d', path)
     .style('fill', d => colorScale(education[d.id].edu))
     .attr('data-fips', d => d.id)
-    .attr('data-education', d => education[d.id].edu)
+    .attr('data-education', d => education[d.id].edu);
+
+  /**
+   * Add the tooltip
+   */
+  svg
+    .selectAll('path')
     .on('mouseover', d => {
       /* Show tooltip when hovering in */
       divTooltip
