@@ -125,10 +125,9 @@ function ready(error, counties_data, education_data) {
         .attr('data-education', edu);
 
       divTooltip
-        .html(`${county_name}, ND: ${edu}%`)
+        .html(`${county_name} - ${edu}%`)
         .style('left', d3.event.pageX + 10 + 'px')
-        .style('top', d3.event.pageY - 35 + 'px')
-        .style('background', 'grey');
+        .style('top', d3.event.pageY - 35 + 'px');
 
       /*const formatTime = d3.timeFormat('%M:%S');
       const doped = d[2] === '' ? '' : `<br><br>${d[2]}`;

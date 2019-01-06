@@ -23,12 +23,12 @@ h3 {
 .svg {
   width: 100%;
   height: 100%;
-  background: #fafafa; /* grey lighten-5 */
 }
 
 .tooltip {
   position: absolute;
   text-align: center;
+  background: #ffee58; /* yellow lighten-1 */
   line-height: 1.5em;
   padding: 12px;
   font-size: 0.8em;
